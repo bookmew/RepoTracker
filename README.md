@@ -8,17 +8,6 @@ AI Agent Meme GitHub Repository Tracker
 - MySQL Database
 - RESTful API Design
 
-## Project Structure 
-├── go.mod # Go module definition
-├── src/ # Source code directory
-├── main.go # Application entry point
-│ ├── controller/ # Route controllers
-│ │ └── routes.go # API route definitions
-│ ├── handler/ # Request handlers
-│ ├── repository/ # Data access layer
-│ └── util/ # Utility functions
-└── log/ # Log files
-
 ## Installation and Running
 
 ### Prerequisites

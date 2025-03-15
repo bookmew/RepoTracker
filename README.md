@@ -1,26 +1,53 @@
 # RepoTracker
-AI Agent Meme GitHub Repository Tracker
+GitHub Repository Statistics Tracker
 
 ## Tech Stack
 
 - Go Language
 - Gin Web Framework
-- MySQL Database
+- PostgreSQL Database
 - RESTful API Design
+
+## Project Structure 
+```
+├── go.mod                # Go module definition
+├── go.sum                # Go module checksums
+├── .env                  # Environment variables
+├── src/                  # Source code directory
+│   ├── main.go           # Application entry point
+│   ├── controller/       # Route controllers
+│   ├── handler/          # Request handlers
+│   ├── model/            # Data models
+│   ├── repository/       # Data access layer
+│   ├── service/          # Business logic
+│   └── util/             # Utility functions
+│       └── github.go     # GitHub API client
+└── common/               # Common resources
+    └── sql/              # SQL scripts
+        └── table/        # Table definitions
+```
+
+## Features
+
+- Fetch and store GitHub repository statistics (stars, forks, contributors)
+- Periodic updates of repository statistics (hourly)
+- RESTful API for accessing repository data
+- Support for multiple repositories
 
 ## Installation and Running
 
 ### Prerequisites
 
 - Go 1.16+
-- MySQL 5.7+
+- PostgreSQL 12+
+- GitHub API token (for higher rate limits)
 
 ### Installation Steps
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/bookmew/GithubResource-Demo.git
-   cd web3-ai-meme
+   git clone https://github.com/bookmew/RepoTracker.git
+   cd github-repo-tracker
    ```
 
 2. Install dependencies
@@ -29,20 +56,25 @@ AI Agent Meme GitHub Repository Tracker
    ```
 
 3. Configure the database
-   - Create a MySQL database
+   - Create a PostgreSQL database
+   - Run the SQL scripts in `common/sql/table/` to create the necessary tables
 
-4. Run the application
+4. Configure environment variables
+   - Copy `.env.example` to `.env`
+   - Update the values in `.env` with your configuration
+   - Make sure to set your GitHub API token for higher rate limits
+
+5. Run the application
    ```bash
-   go run main.go
+   go run src/main.go
    ```
 
-5. Access the API
+6. Access the API
    The server will run at `http://localhost:8080`
 
-## API Documentation
+## Automatic Updates
 
-## Database Structure
-
+The application automatically updates repository statistics every hour.
 ## License
 
 [MIT](LICENSE)

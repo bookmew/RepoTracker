@@ -14,8 +14,8 @@ func NewRepoStatsService(repo *repository.RepoStatsRepository) *RepoStatsService
 	return &RepoStatsService{repo: repo}
 }
 
-func (s *RepoStatsService) GetByMint(repoFullName string) ([]entity.RepoStats, error) {
-	return s.repo.GetByMint(repoFullName)
+func (s *RepoStatsService) GetByMint(mint string) ([]entity.RepoStats, error) {
+	return s.repo.GetByMint(mint)
 }
 
 func (s *RepoStatsService) GetAll() ([]entity.RepoStats, error) {
@@ -31,4 +31,12 @@ func (s *RepoStatsService) SaveStats(repoURL string) error {
 
 	// Save data to database
 	return s.repo.SaveStats(repoURL, dataPoint)
+}
+
+func (s *RepoStatsService) GetLatestAll() ([]entity.RepoStats, error) {
+	return s.repo.GetLatestAll()
+}
+
+func (s *RepoStatsService) GetLatestByMint(mint string) (*entity.RepoStats, error) {
+	return s.repo.GetLatestByMint(mint)
 }

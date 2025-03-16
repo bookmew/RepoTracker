@@ -133,3 +133,71 @@ func (r *RepoStatsRepository) SaveStats(repoURL string, dataPoint entity.RepoDat
 
 	return err
 }
+
+func (r *RepoStatsRepository) GetLatestAll() ([]entity.RepoStats, error) {
+	query := `
+		SELECT id, repo_name, repo_owner, repo_full_name, stars_count, forks_count, 
+		       contributors_count, stats_date, updated_at
+		FROM repo_stats_latest
+		ORDER BY repo_full_name
+	`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var stats []entity.RepoStats
+	for rows.Next() {
+		var s entity.RepoStats
+		var statsDate, updatedAt time.Time
+
+		err := rows.Scan(
+			&s.ID, &s.RepoName, &s.RepoOwner, &s.RepoFullName,
+			&s.StarsCount, &s.ForksCount, &s.ContributorsCount,
+			&statsDate, &updatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		s.StatsDate = statsDate
+		s.UpdatedAt = updatedAt
+		stats = append(stats, s)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return stats, nil
+}
+
+func (r *RepoStatsRepository) GetLatestByMint(repoFullName string) (*entity.RepoStats, error) {
+	query := `
+		SELECT id, repo_name, repo_owner, repo_full_name, stars_count, forks_count, 
+		       contributors_count, stats_date, updated_at
+		FROM repo_stats_latest
+		WHERE repo_full_name = $1
+	`
+
+	var s entity.RepoStats
+	var statsDate, updatedAt time.Time
+
+	err := r.db.QueryRow(query, repoFullName).Scan(
+		&s.ID, &s.RepoName, &s.RepoOwner, &s.RepoFullName,
+		&s.StarsCount, &s.ForksCount, &s.ContributorsCount,
+		&statsDate, &updatedAt,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	s.StatsDate = statsDate
+	s.UpdatedAt = updatedAt
+	return &s, nil
+}

@@ -3,6 +3,7 @@ package service
 import (
 	"RepoTracker/src/entity"
 	"RepoTracker/src/repository"
+	"RepoTracker/src/util"
 )
 
 type RepoStatsService struct {
@@ -19,4 +20,15 @@ func (s *RepoStatsService) GetByMint(repoFullName string) ([]entity.RepoStats, e
 
 func (s *RepoStatsService) GetAll() ([]entity.RepoStats, error) {
 	return s.repo.GetAll()
+}
+
+func (s *RepoStatsService) SaveStats(repoURL string) error {
+	// Fetch repository data from GitHub API
+	dataPoint, err := util.FetchRepoData(repoURL)
+	if err != nil {
+		return err
+	}
+
+	// Save data to database
+	return s.repo.SaveStats(repoURL, dataPoint)
 }

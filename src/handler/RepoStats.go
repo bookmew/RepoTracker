@@ -42,10 +42,27 @@ func (h *RepoStatsHandler) GetAllRepoStats(c *gin.Context) {
 	c.JSON(http.StatusOK, stats)
 }
 
+func (h *RepoStatsHandler) FetchRepoStats(c *gin.Context) {
+	repoURL := c.Query("repo_url")
+	if repoURL == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "repo_url is required"})
+		return
+	}
+	
+	err := h.service.SaveStats(repoURL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{"message": "Repository statistics fetched successfully"})
+}
+
 func (h *RepoStatsHandler) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("/api")
 	{
-		api.GET("/repo-stats", h.GetAllRepoStats)
-		api.GET("/repo-stats/:mint", h.GetRepoStatsByMint)
+		api.GET("/repo-stats/history", h.GetAllRepoStats)
+		api.GET("/repo-stats/history/:mint", h.GetRepoStatsByMint)
+		api.GET("/fetch-repo-stats", h.FetchRepoStats)
 	}
 }

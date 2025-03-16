@@ -7,7 +7,7 @@ CREATE TABLE repo_stats (
     forks_count BIGINT DEFAULT 0,
     contributors_count BIGINT DEFAULT 0,
     stats_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE UNIQUE INDEX idx_repo_stats_repo_id_date ON repo_stats(repo_full_name, stats_date);

@@ -13,5 +13,5 @@ type RepoStats struct {
 	ForksCount        int64     `json:"forks_count"`
 	ContributorsCount int64     `json:"contributors_count"`
 	StatsDate         time.Time `json:"stats_date"`
-	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
 }

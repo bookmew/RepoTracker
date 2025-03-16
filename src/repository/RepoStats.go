@@ -117,7 +117,8 @@ func (r *RepoStatsRepository) SaveStats(repoURL string, dataPoint entity.RepoDat
 		DO UPDATE SET
 			stars_count = EXCLUDED.stars_count,
 			forks_count = EXCLUDED.forks_count,
-			contributors_count = EXCLUDED.contributors_count
+			contributors_count = EXCLUDED.contributors_count,
+			updated_at = CURRENT_TIMESTAMP
 	`
 
 	_, err := r.db.Exec(
